@@ -7,42 +7,22 @@ export default function AboutPage() {
   const router = useRouter()
 
   useEffect(() => {
-    let touchStartX: number | null = null
-    let touchEndX: number | null = null
-
-    const EDGE_THRESHOLD = 20 // Only capture swipes that start near the left edge
-
     const handleTouchStart = (e: TouchEvent) => {
-      const x = e.touches[0].clientX
-      if (x < EDGE_THRESHOLD) {
-        touchStartX = x
+      if (e.touches.length === 1) {
+        const touch = e.touches[0]
+        // Check if the touch is near the edge of the screen (adjust threshold as needed)
+        if (touch.clientX <= 30 || touch.clientX >= window.innerWidth - 30) {
+          e.preventDefault() // Prevent swipe-to-navigate
+        }
       }
     }
 
-    const handleTouchEnd = (e: TouchEvent) => {
-      touchEndX = e.changedTouches[0].clientX
-
-      if (
-        touchStartX !== null &&
-        touchEndX - touchStartX > 50 // minimum swipe distance
-      ) {
-        // You can show a modal, alert, or cancel navigation here
-        console.log('Edge swipe detected')
-        // Prevent navigation with a push or similar if needed
-        history.pushState(null, '', window.location.pathname)
-      }
-
-      // Reset values
-      touchStartX = null
-      touchEndX = null
-    }
-
-    document.addEventListener('touchstart', handleTouchStart)
-    document.addEventListener('touchend', handleTouchEnd)
+    document.addEventListener('touchstart', handleTouchStart, {
+      passive: false,
+    })
 
     return () => {
       document.removeEventListener('touchstart', handleTouchStart)
-      document.removeEventListener('touchend', handleTouchEnd)
     }
   }, [])
 
@@ -52,7 +32,7 @@ export default function AboutPage() {
 
   return (
     <>
-      <h1>About Page with edge threshold</h1>
+      <h1>About Page from google IA</h1>
       <p>{counter}</p>
       <button
         style={{ display: 'block', marginTop: '16px' }}
