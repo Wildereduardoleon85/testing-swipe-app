@@ -44,7 +44,7 @@ export default function AboutPage() {
 
   return (
     <>
-      <h1>About Page</h1>
+      <h1>About Page with swipes</h1>
       <p>{counter}</p>
       <button
         style={{ display: 'block', marginTop: '16px' }}
