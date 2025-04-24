@@ -7,31 +7,39 @@ export default function AboutPage() {
   const router = useRouter()
 
   useEffect(() => {
-    // Variables to store touch positions
     let touchStartX: number | null = null
     let touchEndX: number | null = null
 
-    // Function to detect swipe gesture
+    const EDGE_THRESHOLD = 20 // Only capture swipes that start near the left edge
+
     const handleTouchStart = (e: TouchEvent) => {
-      touchStartX = e.touches[0].clientX
+      const x = e.touches[0].clientX
+      if (x < EDGE_THRESHOLD) {
+        touchStartX = x
+      }
     }
 
     const handleTouchEnd = (e: TouchEvent) => {
       touchEndX = e.changedTouches[0].clientX
 
-      if (touchStartX !== null && touchEndX !== null) {
-        // If the swipe is from left to right (back gesture)
-        if (touchEndX < touchStartX) {
-          e.preventDefault() // Prevent the back action from happening
-        }
+      if (
+        touchStartX !== null &&
+        touchEndX - touchStartX > 50 // minimum swipe distance
+      ) {
+        // You can show a modal, alert, or cancel navigation here
+        console.log('Edge swipe detected')
+        // Prevent navigation with a push or similar if needed
+        history.pushState(null, '', window.location.pathname)
       }
+
+      // Reset values
+      touchStartX = null
+      touchEndX = null
     }
 
-    // Adding event listeners for swipe detection
     document.addEventListener('touchstart', handleTouchStart)
     document.addEventListener('touchend', handleTouchEnd)
 
-    // Cleanup event listeners when the component unmounts
     return () => {
       document.removeEventListener('touchstart', handleTouchStart)
       document.removeEventListener('touchend', handleTouchEnd)
@@ -44,7 +52,7 @@ export default function AboutPage() {
 
   return (
     <>
-      <h1>About Page with swipes</h1>
+      <h1>About Page with edge threshold</h1>
       <p>{counter}</p>
       <button
         style={{ display: 'block', marginTop: '16px' }}
