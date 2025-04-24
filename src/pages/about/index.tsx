@@ -7,11 +7,16 @@ export default function AboutPage() {
   const router = useRouter()
 
   useEffect(() => {
+    const EDGE_THRESHOLD = 30
+
     const handleTouchStart = (e: TouchEvent) => {
       if (e.touches.length === 1) {
         const touch = e.touches[0]
         // Check if the touch is near the edge of the screen (adjust threshold as needed)
-        if (touch.clientX <= 30 || touch.clientX >= window.innerWidth - 30) {
+        if (
+          touch.clientX <= EDGE_THRESHOLD ||
+          touch.clientX >= window.innerWidth - EDGE_THRESHOLD
+        ) {
           e.preventDefault() // Prevent swipe-to-navigate
         }
       }
@@ -31,21 +36,37 @@ export default function AboutPage() {
   }
 
   return (
-    <>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}
+    >
       <h1>About Page from google IA</h1>
-      <p>{counter}</p>
+      <p style={{ marginTop: '30px' }}>{counter}</p>
       <button
-        style={{ display: 'block', marginTop: '16px' }}
+        style={{
+          display: 'block',
+          marginTop: '16px',
+          width: 'fit-content',
+          padding: '8px',
+        }}
         onClick={() => setCounter(counter + 1)}
       >
         Add
       </button>
       <button
-        style={{ display: 'block', marginTop: '16px' }}
+        style={{
+          display: 'block',
+          marginTop: '16px',
+          width: 'fit-content',
+          padding: '8px',
+        }}
         onClick={handleBack}
       >
         Go Back
       </button>
-    </>
+    </div>
   )
 }
