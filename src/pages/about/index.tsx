@@ -43,7 +43,7 @@ export default function AboutPage() {
         alignItems: 'center',
       }}
     >
-      <h1>About Page from google IA</h1>
+      <h1>About Page</h1>
       <p style={{ marginTop: '30px' }}>{counter}</p>
       <button
         style={{
