@@ -1,0 +1,28 @@
+import { useEffect } from 'react'
+
+export function usePreventSwipeBackNavigation() {
+  useEffect(() => {
+    const EDGE_THRESHOLD = 30
+
+    const handleTouchStart = (e: TouchEvent) => {
+      if (e.touches.length === 1) {
+        const touch = e.touches[0]
+        // Check if the touch is near the edge of the screen (adjust threshold as needed)
+        if (
+          touch.clientX <= EDGE_THRESHOLD ||
+          touch.clientX >= window.innerWidth - EDGE_THRESHOLD
+        ) {
+          e.preventDefault() // Prevent swipe-to-navigate
+        }
+      }
+    }
+
+    document.addEventListener('touchstart', handleTouchStart, {
+      passive: false,
+    })
+
+    return () => {
+      document.removeEventListener('touchstart', handleTouchStart)
+    }
+  }, [])
+}
