@@ -1,33 +1,44 @@
 import { useRouter } from 'next/router'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function AboutPage() {
   const [counter, setCounter] = useState(0)
 
   const router = useRouter()
 
-  // Wrap handlePopState in useCallback
-  const handlePopState = useCallback(() => {
-    // Re-push one entry to keep user on the same page
-    history.pushState(null, '', router.pathname)
-  }, [router.pathname])
-
   useEffect(() => {
-    // Push initial fake entries
-    for (let i = 0; i < 2; i++) {
-      history.pushState(null, '', router.pathname)
+    // Variables to store touch positions
+    let touchStartX: number | null = null
+    let touchEndX: number | null = null
+
+    // Function to detect swipe gesture
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartX = e.touches[0].clientX
     }
 
-    window.addEventListener('popstate', handlePopState)
+    const handleTouchEnd = (e: TouchEvent) => {
+      touchEndX = e.changedTouches[0].clientX
 
+      if (touchStartX !== null && touchEndX !== null) {
+        // If the swipe is from left to right (back gesture)
+        if (touchEndX < touchStartX) {
+          e.preventDefault() // Prevent the back action from happening
+        }
+      }
+    }
+
+    // Adding event listeners for swipe detection
+    document.addEventListener('touchstart', handleTouchStart)
+    document.addEventListener('touchend', handleTouchEnd)
+
+    // Cleanup event listeners when the component unmounts
     return () => {
-      window.removeEventListener('popstate', handlePopState)
+      document.removeEventListener('touchstart', handleTouchStart)
+      document.removeEventListener('touchend', handleTouchEnd)
     }
-  }, [router.pathname, handlePopState])
+  }, [])
 
   const handleBack = () => {
-    // Remove the event listener before going back
-    window.removeEventListener('popstate', handlePopState)
     router.back()
   }
 
