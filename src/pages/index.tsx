@@ -1,8 +1,8 @@
-import { usePreventSwipeBackNavigation } from '@/hooks/usePreventSwipeBackNavigation'
+import { usePreventEdgeGestures } from '@/hooks/usePreventEdgeGestures'
 import { useRouter } from 'next/router'
 
 export default function Home() {
-  usePreventSwipeBackNavigation()
+  usePreventEdgeGestures()
 
   const router = useRouter()
 
