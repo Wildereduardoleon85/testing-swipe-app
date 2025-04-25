@@ -1,4 +1,4 @@
-import { usePreventSwipeBackNavigation } from '@/hooks/usePreventSwipeBackNavigation'
+import { usePreventEdgeGestures } from '@/hooks/usePreventEdgeGestures'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 
@@ -7,7 +7,7 @@ export default function AboutPage() {
 
   const router = useRouter()
 
-  usePreventSwipeBackNavigation()
+  usePreventEdgeGestures()
 
   const handleBack = () => {
     router.back()
