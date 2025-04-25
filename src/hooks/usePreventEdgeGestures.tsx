@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 // 16 works well to block navigation without affecting normal edge
 // interactions and it matches with the right and left padding of the
 // app UI.
-const EDGE_THRESHOLD = 16
+const EDGE_THRESHOLD = 30
 
 /**
  * A custom React hook that prevents touch gestures near the edges of the screen.
@@ -17,18 +17,17 @@ export function usePreventEdgeGestures() {
   useEffect(() => {
     const handleTouchStart = (e: TouchEvent) => {
       // Ensure that only single-finger touches are processed
-      if (e.touches.length === 1) {
-        // Gets the first (and only) finger that touched the screen
-        const touch = e.touches[0]
 
-        // Check if the touch is near the edge of the screen
-        if (
-          touch.clientX <= EDGE_THRESHOLD ||
-          touch.clientX >= window.innerWidth - EDGE_THRESHOLD
-        ) {
-          // This blocks any touch event that is near the edge of the screen
-          e.preventDefault()
-        }
+      // Gets the first (and only) finger that touched the screen
+      const touch = e.touches[0]
+
+      // Check if the touch is near the edge of the screen
+      if (
+        touch.clientX <= EDGE_THRESHOLD ||
+        touch.clientX >= window.innerWidth - EDGE_THRESHOLD
+      ) {
+        // This blocks any touch event that is near the edge of the screen
+        e.preventDefault()
       }
     }
 

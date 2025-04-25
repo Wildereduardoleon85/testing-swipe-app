@@ -4,10 +4,9 @@ import { useState } from 'react'
 
 export default function AboutPage() {
   const [counter, setCounter] = useState(0)
+  usePreventEdgeGestures()
 
   const router = useRouter()
-
-  usePreventEdgeGestures()
 
   const handleBack = () => {
     router.back()
